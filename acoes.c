@@ -5,22 +5,20 @@
 #include "acoes.h"
 
 PRODUTO carregar_Produtos(FILE *f, PRODUTO *x){
-    PRODUTO newProduto = malloc(sizeof(struct product));
+    
+    int foundID, foundStock;
+    char *buffer,*foundName;
+    PRODUTO *new;
 
-    char *buffer;
-    char *found;
     while(fgets(buffer, 71, f) != NULL){
-        int i, p = 0;
-        newProduto->ID = atoi(strsep(&buffer,"."));
-        found = strsep(&buffer,".");
-        for(i = 0; found[i]; i++) newProduto->nome[i] = found[i];
-        newProduto->stock = atoi(strsep(&buffer,"."));
-
-        newProduto->prox = (*x);
-        x = &newProduto;
+        
+        foundID = atoi(strsep(&buffer,"."));
+        foundName = strsep(&buffer,".");
+        foundStock = atoi(strsep(&buffer,"."));
+        new = criar_Produto(foundID, foundName, foundStock);
+        x = &(adicionar_PRODUTO(x,new));
     }
-
-    return newProduto;
+    return x;
 }
 
 void escrever_Produto(FILE *f, PRODUTO *x){
@@ -37,10 +35,18 @@ void gravar(FILE *f, PRODUTO *x){
     }
 }
 
-void adicionar_PRODUTO(PRODUTO *x, PRODUTO add){
-    PRODUTO *prev = NULL;    
-    while((*x) && (*x)->prox && strcmp((*x)->ID,add->ID) < 0){
-        prev = x;
-        x = &((*x)->prox);
-    }
+PRODUTO * criar_Produto(int ID, char* nome, int stock){
+    PRODUTO newProduto = malloc(sizeof(struct product));
+    newProduto->ID = ID;
+    for(int i = 0; nome[i]; i++) newProduto->nome[i] = nome[i];
+    newProduto->stock = stock;
+
+    return &newProduto;
+}
+
+
+
+PRODUTO adicionar_PRODUTO(PRODUTO *x, PRODUTO add){
+    add->prox = x;
+    return add;
 }
