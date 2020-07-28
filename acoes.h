@@ -3,10 +3,10 @@
 
 #include "estado.h"
 
-PRODUTO carregar_Produtos(FILE *f, PRODUTO *x);
+PRODUTO carregar_Produtos(FILE *, PRODUTO);
 void escrever_Produto(FILE *, PRODUTO *);
 void gravar(FILE *, PRODUTO *);
-PRODUTO * criar_Produto(int, char*, int);
-PRODUTO adicionar_PRODUTO(PRODUTO *, PRODUTO);
+PRODUTO criar_Produto(int, char*, int);
+PRODUTO adicionar_PRODUTO(PRODUTO atual, PRODUTO toAdd);
 
 #endif
